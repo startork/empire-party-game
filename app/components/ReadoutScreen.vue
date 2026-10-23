@@ -61,7 +61,7 @@ onBeforeUnmount(() => {
       <p v-else-if="status === 'error'" class="message" role="alert">
         The names could not be read aloud. Check the volume and try again.
       </p>
-      <p v-else class="lede">
+      <p v-else-if="status !== 'speaking'" class="lede">
         The names will be read twice, each time in a different order.
       </p>
     </div>
