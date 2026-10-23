@@ -13,15 +13,25 @@ const emit = defineEmits<{
 }>()
 
 const draft = ref('')
+const locked = ref(true)
 const input = useTemplateRef('input')
 
 watch(() => props.handoff, async (isHandoff) => {
   if (isHandoff)
     return
   draft.value = ''
+  locked.value = true
   await nextTick()
   input.value?.focus()
 })
+
+function unlock(event: FocusEvent) {
+  const field = event.target
+  if (!(field instanceof HTMLInputElement) || !locked.value)
+    return
+  locked.value = false
+  void nextTick(() => field.focus())
+}
 
 onMounted(() => {
   if (!props.handoff)
@@ -64,14 +74,19 @@ function submit() {
         v-model="draft"
         class="field"
         type="text"
+        name="secret-entry"
         autocomplete="off"
+        autocorrect="off"
         autocapitalize="words"
+        spellcheck="false"
         enterkeyhint="next"
         maxlength="80"
-        placeholder="Any name"
+        placeholder="Type here"
+        :readonly="locked"
         :aria-invalid="error ? 'true' : undefined"
         :aria-describedby="error ? 'entry-error' : undefined"
         required
+        @focus="unlock"
         @input="onInput"
       >
       <p v-if="error" id="entry-error" class="message" role="alert">

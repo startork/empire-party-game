@@ -3,11 +3,9 @@ defineProps<{
   names: string[]
 }>()
 
-const emit = defineEmits<{
+defineEmits<{
   restart: []
 }>()
-
-const confirming = ref(false)
 </script>
 
 <template>
@@ -21,18 +19,7 @@ const confirming = ref(false)
       </ol>
     </div>
     <div class="screen-actions">
-      <template v-if="confirming">
-        <p class="lede">
-          Start a new game? This clears every name.
-        </p>
-        <button type="button" class="button" @click="emit('restart')">
-          Start over
-        </button>
-        <button type="button" class="button secondary" @click="confirming = false">
-          Keep this list
-        </button>
-      </template>
-      <button v-else type="button" class="button" @click="confirming = true">
+      <button type="button" class="button" @click="$emit('restart')">
         Start a new game
       </button>
     </div>

@@ -18,6 +18,7 @@ const {
 } = useGameSession()
 
 const entryError = ref('')
+const confirmingReset = ref(false)
 
 const count = computed({
   get: () => state.expectedCount,
@@ -41,6 +42,7 @@ function onAddPlayers(extra: number) {
 
 function resetGame() {
   entryError.value = ''
+  confirmingReset.value = false
   newGame()
 }
 
@@ -51,6 +53,19 @@ onMounted(() => {
 
 <template>
   <main class="app">
+    <div class="topbar">
+      <template v-if="confirmingReset">
+        <button type="button" class="text-button" @click="confirmingReset = false">
+          Cancel
+        </button>
+        <button type="button" class="text-button danger" @click="resetGame">
+          Clear game
+        </button>
+      </template>
+      <button v-else type="button" class="text-button" @click="confirmingReset = true">
+        Start over
+      </button>
+    </div>
     <SetupScreen
       v-if="state.phase === 'setup'"
       v-model:count="count"

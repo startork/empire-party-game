@@ -56,6 +56,29 @@ input {
     max(1.25rem, env(safe-area-inset-left));
 }
 
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  min-height: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.text-button {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0.25rem 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.text-button.danger {
+  color: var(--alert);
+}
+
 .screen {
   display: flex;
   flex: 1;
@@ -173,6 +196,7 @@ h1 {
 
 .button:focus-visible,
 .stepper-button:focus-visible,
+.text-button:focus-visible,
 .field:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
