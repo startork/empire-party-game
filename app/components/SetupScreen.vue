@@ -14,15 +14,15 @@ defineEmits<{
       <p class="eyebrow">Empire</p>
       <h1>How to play</h1>
       <ol class="instructions">
-        <li>Pass this phone around. Each person secretly enters one real famous person, living or dead.</li>
+        <li>Pass this phone around. Each person secretly enters one name. It can be anyone, real or fictional.</li>
         <li>The phone then reads every name aloud, twice, each time in a random order. Listen carefully. The names stay hidden.</li>
         <li>Play the game. When you are finished, reveal the list.</li>
       </ol>
 
       <p class="label">Category</p>
       <div class="choice">
-        <span class="choice-title">Famous people</span>
-        <span class="choice-note">Real people only, living or dead.</span>
+        <span class="choice-title">Anyone</span>
+        <span class="choice-note">Real or fictional.</span>
       </div>
 
       <p id="player-count-label" class="label">How many people</p>

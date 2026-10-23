@@ -13,6 +13,7 @@ const status = ref<'idle' | 'speaking' | 'error'>('idle')
 const pass = ref<1 | 2>(1)
 const index = ref(0)
 const total = ref(0)
+const counting = ref(false)
 let run: SpeechRun | null = null
 
 const passLabel = computed(() => pass.value === 1 ? 'First time' : 'Second time')
@@ -29,8 +30,11 @@ function play() {
   run = speakLines(buildReadout(first, second), {
     onLine: (line) => {
       pass.value = line.pass
-      index.value = line.index
-      total.value = line.total
+      counting.value = line.kind === 'name'
+      if (line.kind === 'name') {
+        index.value = line.index
+        total.value = line.total
+      }
     },
     onDone: () => {
       status.value = 'idle'
@@ -51,7 +55,7 @@ onBeforeUnmount(() => {
   <section class="screen">
     <div class="screen-body">
       <h1>{{ status === 'speaking' ? passLabel : 'Listen' }}</h1>
-      <p v-if="status === 'speaking'" class="lede" aria-live="polite">
+      <p v-if="status === 'speaking' && counting" class="lede" aria-live="polite">
         Name {{ index }} of {{ total }}
       </p>
       <p v-else-if="status === 'error'" class="message" role="alert">

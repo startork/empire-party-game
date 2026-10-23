@@ -1,8 +1,10 @@
 const RATE = 0.95
-const NAME_GAP_MS = 700
+const NAME_GAP_MS = 700 * 1.5
 const PASS_GAP_MS = 1100
 
 export const SAMPLE_LINE = 'This is a volume check. If you can hear this clearly, you are ready to play.'
+export const FIRST_ANNOUNCEMENT = 'I am now reading the names for the first time.'
+export const SECOND_ANNOUNCEMENT = 'And now I will read all the names again in a different order.'
 
 export interface SpokenLine {
   text: string
@@ -10,6 +12,7 @@ export interface SpokenLine {
   index: number
   total: number
   gapAfter: number
+  kind: 'announcement' | 'name'
 }
 
 export interface SpeechHooks {
@@ -36,6 +39,15 @@ export function primeSpeech(): void {
 }
 
 export function buildReadout(first: readonly string[], second: readonly string[]): SpokenLine[] {
+  const announcement = (text: string, pass: 1 | 2, total: number): SpokenLine => ({
+    text,
+    pass,
+    index: 0,
+    total,
+    gapAfter: NAME_GAP_MS,
+    kind: 'announcement',
+  })
+
   const toLines = (names: readonly string[], pass: 1 | 2, trailingGap: number): SpokenLine[] =>
     names.map((text, index) => ({
       text,
@@ -43,10 +55,13 @@ export function buildReadout(first: readonly string[], second: readonly string[]
       index: index + 1,
       total: names.length,
       gapAfter: index === names.length - 1 ? trailingGap : NAME_GAP_MS,
+      kind: 'name' as const,
     }))
 
   return [
+    announcement(FIRST_ANNOUNCEMENT, 1, first.length),
     ...toLines(first, 1, PASS_GAP_MS),
+    announcement(SECOND_ANNOUNCEMENT, 2, second.length),
     ...toLines(second, 2, 0),
   ]
 }
@@ -137,5 +152,6 @@ export function speakSample(hooks: Pick<SpeechHooks, 'onDone' | 'onError'> = {})
     index: 1,
     total: 1,
     gapAfter: 0,
+    kind: 'announcement',
   }], hooks)
 }

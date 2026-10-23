@@ -57,8 +57,8 @@ function submit() {
   <form v-else class="screen" autocomplete="off" @submit.prevent="submit">
     <div class="screen-body">
       <p class="eyebrow">Player {{ playerNumber }} of {{ total }}</p>
-      <h1>Enter one famous person</h1>
-      <p class="lede">Real people only, living or dead.</p>
+      <h1>Enter one name</h1>
+      <p class="lede">Real or fictional.</p>
       <input
         ref="input"
         v-model="draft"
@@ -68,7 +68,7 @@ function submit() {
         autocapitalize="words"
         enterkeyhint="next"
         maxlength="80"
-        placeholder="A famous person"
+        placeholder="Any name"
         :aria-invalid="error ? 'true' : undefined"
         :aria-describedby="error ? 'entry-error' : undefined"
         required
